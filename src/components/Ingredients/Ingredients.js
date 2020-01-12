@@ -49,6 +49,19 @@ function Ingredients() {
     })
     // setUserIngredients(prevIngredients => [...prevIngredients,{id: Math.random().toString(),...ingredient}])
   };
+
+  const removeIngredientHandler = ingredientId => {
+    fetch(`https://react-hooks-cb078.firebaseio.com/ingredients/${ingredientId}.json`,{
+        method: 'DELETE',
+        headers: {'Content-Type':'application/json'}
+    }).then((response)=>{
+      debugger
+      setUserIngredients(prevIngredients=>
+        prevIngredients.filter(ingredient=>ingredient.id !== ingredientId)
+      )
+    })
+  }
+
   return (
     <div className="App">
       <IngredientForm onAddIngredient = {addIngredientHandler}/>
@@ -56,7 +69,7 @@ function Ingredients() {
       <section>
         <Search onLoadIngredients={filteredIngredientHandler} />
         {/* Need to add list here! */}
-        <IngredientList ingredients = {userIngredients} onRemoveItem={() => {}}/>
+        <IngredientList ingredients = {userIngredients} onRemoveItem={removeIngredientHandler}/>
       </section>
     </div>
   );
