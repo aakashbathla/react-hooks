@@ -8,7 +8,7 @@ const Search = React.memo(props => {
   const inputRef = useRef();
 
   useEffect(()=>{
-    setTimeout(()=>{
+    const timer = setTimeout(()=>{
       if(enteredFilter === inputRef.current.value){
         const query = enteredFilter.length === 0 ? '' : `?orderBy="name"&equalTo="${enteredFilter}"`;
         fetch('https://react-hooks-cb078.firebaseio.com/ingredients.json' + query,{
@@ -29,7 +29,11 @@ const Search = React.memo(props => {
         })
       }
     },500)
+    return () => {
+      clearTimeout(timer);
+    }
   },[enteredFilter,onLoadIngredients,inputRef])
+
   return (
     <section className="search">
       <Card>
